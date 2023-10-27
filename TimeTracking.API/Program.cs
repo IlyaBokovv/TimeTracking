@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TimeTracking.API.Middlewares;
 using TimeTracking.Data;
 using TimeTracking.Data.Repository;
 using TimeTracking.Data.Repository.Interfaces;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
 var app = builder.Build();
+app.ConfigureExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
