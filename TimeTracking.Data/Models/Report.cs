@@ -17,7 +17,7 @@ namespace TimeTracking.Data.Models
         [Required(ErrorMessage = "Worked hours is a required field")]
         public int WorkedHours { get; set; }
         [Required(ErrorMessage = "Current date is a required field")]
-        public DateOnly CurrentDate { get; set; }
+        public DateOnly Date { get; set; }
         [ForeignKey("User")]
         public Guid UserId { get; set; }
         public User? User { get; set; }
