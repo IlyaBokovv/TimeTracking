@@ -20,7 +20,7 @@ namespace TimeTracking.API.Controllers
             var reports = await _service.ReportService.GetReportsAsync(userId, false);
             return Ok(reports);
         }
-        [HttpGet("{id:guid}", Name = "GetReportForUser")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetReportForUser(Guid userId, Guid id)
         {
             var report = await _service.ReportService.GetReportAsync(userId, id, false);

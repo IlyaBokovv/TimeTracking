@@ -23,7 +23,7 @@ namespace TimeTracking.API.Controllers
 
             return Ok(users);
         }
-        [HttpGet("{id:guid}", Name = "UserById")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             var user = await _service.UserService.GetUserAsync(id, false);
@@ -34,7 +34,7 @@ namespace TimeTracking.API.Controllers
         {
             var createdUser = await _service.UserService.CreateUserAsync(user);
 
-            return CreatedAtRoute("UserById", new { id = createdUser.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, user);
         }
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteUser(Guid id)

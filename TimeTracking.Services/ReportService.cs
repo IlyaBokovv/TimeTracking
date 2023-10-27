@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeTracking.Data.DTOs;
+using TimeTracking.Data.Exceptions;
 using TimeTracking.Data.Models;
 using TimeTracking.Data.Repository.Interfaces;
 using TimeTracking.Services.Interfaces;
@@ -25,9 +26,9 @@ namespace TimeTracking.Services
         public async Task<ReportDTO> CreateReportForUserAsync(Guid userId, ReportCreateAndUpdateDTO report, bool trackChanges)
         {
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
-            if(user is null)
+            if (user is null)
             {
-                //throw new UserNotFoundException(userId);
+                throw new UserNotFoundException(userId);
             }
             var reportEntity = _mapper.Map<Report>(report);
 
@@ -42,14 +43,14 @@ namespace TimeTracking.Services
         public async Task DeleteReportForUserAsync(Guid userId, Guid id, bool trackChanges)
         {
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
-            if(user is null)
+            if (user is null)
             {
-                //throw new UserNotFoundException(userId);
+                throw new UserNotFoundException(userId);
             }
             var reportEntity = await _repository.Report.GetReportAsync(userId, id, trackChanges);
-            if(reportEntity is null)
+            if (reportEntity is null)
             {
-                //throw new UserNotFoundException(userId);
+                throw new ReportNotFoundException(id);
             }
             _repository.Report.DeleteReport(reportEntity);
             await _repository.SaveChangesAsync();
@@ -58,14 +59,14 @@ namespace TimeTracking.Services
         public async Task<ReportDTO> GetReportAsync(Guid userId, Guid id, bool trackChanges)
         {
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
-            if(user is null)
+            if (user is null)
             {
-                //throw new Exception
+                throw new UserNotFoundException(userId);
             }
-            var reportEntity = await _repository.Report.GetReportAsync(userId,id, trackChanges);
-            if(reportEntity is null)
+            var reportEntity = await _repository.Report.GetReportAsync(userId, id, trackChanges);
+            if (reportEntity is null)
             {
-                //throw new Exception
+                throw new ReportNotFoundException(id);
             }
             var report = _mapper.Map<ReportDTO>(reportEntity);
             return report;
@@ -76,7 +77,7 @@ namespace TimeTracking.Services
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if (user is null)
             {
-                //throw new Exception
+                throw new UserNotFoundException(userId);
             }
             var reportsEntity = await _repository.Report.GetReportsAsync(userId, trackChanges);
             var reports = _mapper.Map<IEnumerable<ReportDTO>>(reportsEntity);
@@ -88,12 +89,12 @@ namespace TimeTracking.Services
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if (user is null)
             {
-                //throw new Exception
+                throw new UserNotFoundException(userId);
             }
             var reportEntity = await _repository.Report.GetReportAsync(userId, id, trackChanges);
-            if(reportEntity is null)
+            if (reportEntity is null)
             {
-                //throw
+                throw new ReportNotFoundException(id);
             }
             _mapper.Map(reportForUpdate, reportEntity);
             await _repository.SaveChangesAsync();

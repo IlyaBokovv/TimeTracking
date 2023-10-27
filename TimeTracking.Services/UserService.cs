@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TimeTracking.Data.DTOs;
+using TimeTracking.Data.Exceptions;
 using TimeTracking.Data.Models;
-using TimeTracking.Data.Repository;
 using TimeTracking.Data.Repository.Interfaces;
 using TimeTracking.Services.Interfaces;
 
@@ -28,7 +23,7 @@ namespace TimeTracking.Services
             _repository.User.CreateUser(userEntity);
             await _repository.SaveChangesAsync();
 
-            var userToReturn = _mapper.Map<UserDTO>(user);
+            var userToReturn = _mapper.Map<UserDTO>(userEntity);
             return userToReturn;
         }
 
@@ -37,7 +32,7 @@ namespace TimeTracking.Services
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if (user is null)
             {
-                //throw new UserNotFoundException(id);
+                throw new UserNotFoundException(userId);
             }
             _repository.User.DeleteUser(user);
             await _repository.SaveChangesAsync();
@@ -56,7 +51,7 @@ namespace TimeTracking.Services
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if(user is null)
             {
-                //throw new UserNotFoundException(id);
+                throw new UserNotFoundException(userId);
             }
             var userDTO = _mapper.Map<UserDTO>(user);
             return userDTO;
@@ -68,7 +63,7 @@ namespace TimeTracking.Services
             var user = await _repository.User.GetUserAsync(userId,trackChanges);
             if(user is null)
             {
-                //throw new UserNotFoundException(id);
+                throw new UserNotFoundException(userId);
             }
             _mapper.Map(userForUpdate, user);
             await _repository.SaveChangesAsync();
