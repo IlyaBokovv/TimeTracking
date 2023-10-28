@@ -6,5 +6,10 @@ using System.Threading.Tasks;
 
 namespace TimeTracking.Data.DTOs
 {
-    public record ReportCreateAndUpdateDTO(string Description, int WorkedHours, DateOnly Date);
+    public record ReportCreateAndUpdateDTO()
+    {
+        public string? Description { get; set; }
+        public int? WorkedHours { get; set; }
+        public DateOnly? Date { get; set; }
+    }
 }

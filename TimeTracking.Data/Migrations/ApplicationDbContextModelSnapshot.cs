@@ -46,7 +46,7 @@ namespace TimeTracking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("TimeTracking.Data.Models.User", b =>
@@ -77,7 +77,7 @@ namespace TimeTracking.Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("TimeTracking.Data.Models.Report", b =>

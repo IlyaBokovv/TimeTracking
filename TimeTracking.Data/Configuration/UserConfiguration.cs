@@ -14,6 +14,7 @@ namespace TimeTracking.Data.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasKey(x => x.Id);
         }
     }
 }

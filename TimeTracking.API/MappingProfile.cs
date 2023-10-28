@@ -17,7 +17,7 @@ namespace TimeTracking.API
 
             CreateMap<UserCreateAndUpdateDTO, UserDTO>();
 
-            CreateMap<ReportCreateAndUpdateDTO, Report>().ReverseMap();
+            CreateMap<ReportCreateAndUpdateDTO, Report>();
 
             CreateMap<UserCreateAndUpdateDTO, User>();
 

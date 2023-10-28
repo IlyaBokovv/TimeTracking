@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using TimeTracking.Data;
 using TimeTracking.Data.DTOs;
+using TimeTracking.Data.Models;
 using TimeTracking.Services.Interfaces;
 
 namespace TimeTracking.API.Controllers
@@ -10,10 +12,14 @@ namespace TimeTracking.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IServiceManager _service;
+        private readonly ApplicationDbContext _db;
+        private readonly IValidator<UserCreateAndUpdateDTO> _validator;
 
-        public UsersController(IServiceManager service)
+        public UsersController(IServiceManager service, ApplicationDbContext db, IValidator<UserCreateAndUpdateDTO> validator)
         {
             _service = service;
+            _db = db;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -32,10 +38,17 @@ namespace TimeTracking.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserCreateAndUpdateDTO user)
         {
+            var result = await _validator.ValidateAsync(user);
+            if (!result.IsValid)
+            {
+                return UnprocessableEntity(result.ToDictionary());
+            }
             var createdUser = await _service.UserService.CreateUserAsync(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, user);
         }
+
+
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
@@ -46,9 +59,18 @@ namespace TimeTracking.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserCreateAndUpdateDTO user)
         {
+            var result = await _validator.ValidateAsync(user);
+            if (!result.IsValid)
+            {
+                return UnprocessableEntity(result.ToDictionary());
+            }
             await _service.UserService.UpdateUserAsync(id, user, true);
 
             return NoContent();
+        }
+        private bool IsValidEmail(UserCreateAndUpdateDTO user)
+        {
+            return _db.Set<User>().Any(e => e.Email == user.Email);
         }
     }
 }
