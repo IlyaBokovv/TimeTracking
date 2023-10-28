@@ -8,8 +8,8 @@ namespace TimeTracking.Data.DTOs
 {
     public record ReportCreateAndUpdateDTO()
     {
-        public string? Description { get; set; }
-        public int? WorkedHours { get; set; }
-        public DateOnly? Date { get; set; }
+        public string? Description { get; init; }
+        public int? WorkedHours { get; init; }
+        public DateOnly? Date { get; init; }
     }
 }

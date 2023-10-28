@@ -10,7 +10,6 @@ namespace TimeTracking.Data.Models
 {
     public class Report
     {
-        [Column("ReportId")]
         public Guid Id { get; set; }
         public string? Description { get; set; }
         public int WorkedHours { get; set; }
