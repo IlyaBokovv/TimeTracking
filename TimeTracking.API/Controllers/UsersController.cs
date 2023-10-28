@@ -12,13 +12,11 @@ namespace TimeTracking.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IServiceManager _service;
-        private readonly ApplicationDbContext _db;
         private readonly IValidator<UserCreateAndUpdateDTO> _validator;
 
-        public UsersController(IServiceManager service, ApplicationDbContext db, IValidator<UserCreateAndUpdateDTO> validator)
+        public UsersController(IServiceManager service, IValidator<UserCreateAndUpdateDTO> validator)
         {
             _service = service;
-            _db = db;
             _validator = validator;
         }
 
@@ -67,10 +65,6 @@ namespace TimeTracking.API.Controllers
             await _service.UserService.UpdateUserAsync(id, user, true);
 
             return NoContent();
-        }
-        private bool IsValidEmail(UserCreateAndUpdateDTO user)
-        {
-            return _db.Set<User>().Any(e => e.Email == user.Email);
         }
     }
 }

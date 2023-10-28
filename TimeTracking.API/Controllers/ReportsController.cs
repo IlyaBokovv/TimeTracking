@@ -7,10 +7,10 @@ namespace TimeTracking.API.Controllers
 {
     [Route("api/users/{userId}/[controller]")]
     [ApiController]
-    public class ReportController : ControllerBase
+    public class ReportsController : ControllerBase
     {
         private readonly IServiceManager _service;
-        public ReportController(IServiceManager serviceManager)
+        public ReportsController(IServiceManager serviceManager)
         {
             _service = serviceManager;
         }
@@ -32,7 +32,7 @@ namespace TimeTracking.API.Controllers
             (Guid userId, [FromBody] ReportCreateAndUpdateDTO report)
         {
             var reportToReturn = await _service.ReportService.CreateReportForUserAsync(userId, report,
-                trackChanges: false);
+                false);
 
             return CreatedAtAction(nameof(GetReportForUser), new { userId, id = reportToReturn.Id },
                 reportToReturn);
