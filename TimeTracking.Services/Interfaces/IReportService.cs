@@ -9,7 +9,7 @@ namespace TimeTracking.Services.Interfaces
 {
     public interface IReportService
     {
-        Task<IEnumerable<ReportDTO>> GetReportsAsync(Guid userId, bool trackChanges);
+        Task<IEnumerable<ReportDTO>> GetReportsAsync(Guid userId, int? monthNumber, bool trackChanges);
         Task<ReportDTO> GetReportAsync(Guid userId, Guid id, bool trackChanges);
         Task<ReportDTO> CreateReportForUserAsync(Guid userId,
             ReportCreateAndUpdateDTO report, bool trackChanges);

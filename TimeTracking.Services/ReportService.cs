@@ -72,14 +72,14 @@ namespace TimeTracking.Services
             return report;
         }
 
-        public async Task<IEnumerable<ReportDTO>> GetReportsAsync(Guid userId, bool trackChanges)
+        public async Task<IEnumerable<ReportDTO>> GetReportsAsync(Guid userId, int? monthNumber, bool trackChanges)
         {
             var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if (user is null)
             {
                 throw new UserNotFoundException(userId);
             }
-            var reportsEntity = await _repository.Report.GetReportsAsync(userId, trackChanges);
+            var reportsEntity = await _repository.Report.GetReportsAsync(userId, monthNumber, trackChanges);
             var reports = _mapper.Map<IEnumerable<ReportDTO>>(reportsEntity);
             return reports;
         }

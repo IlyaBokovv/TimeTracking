@@ -8,5 +8,6 @@ namespace TimeTracking.Data.Repository.Interfaces
         Task<User> GetUserAsync(Guid userId, bool trackChanges);
         void CreateUser(User user);
         void DeleteUser(User user);
+        Task<bool> IsEmailUniqueAsync(string email);
     }
 }
