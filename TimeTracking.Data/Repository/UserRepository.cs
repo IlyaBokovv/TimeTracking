@@ -34,11 +34,6 @@ namespace TimeTracking.Data.Repository
             return await FindAll(trackChanges).OrderBy(u => u.LastName).ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
-        {
-            return await FindByCondition(x => ids.Contains(x.Id), trackChanges).ToListAsync();
-        }
-
         public async Task<User> GetUserAsync(Guid userId, bool trackChanges)
         {
             return await FindByCondition(x => x.Id == userId, trackChanges).FirstOrDefaultAsync();
