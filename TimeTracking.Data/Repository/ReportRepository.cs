@@ -30,9 +30,15 @@ namespace TimeTracking.Data.Repository
             return await FindByCondition(r => r.UserId == userId && r.Id == id, trackChanges).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Report>> GetReportsAsync(Guid userId, bool trackChanges)
+        public async Task<IEnumerable<Report>> GetReportsAsync(Guid userId, int? monthNumber, bool trackChanges)
         {
-            return await FindByCondition(r => r.UserId == userId, trackChanges).ToListAsync();
+            var query = FindByCondition(r => r.UserId == userId, trackChanges);
+            if(monthNumber > 0)
+            {
+                query = FindByCondition(r => r.UserId == userId, trackChanges).
+                    Where(r => r.Date.Month == monthNumber);
+            }
+            return await query.ToListAsync();
         }
     }
 }

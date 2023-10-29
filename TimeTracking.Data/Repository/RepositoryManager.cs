@@ -24,7 +24,7 @@ namespace TimeTracking.Data.Repository
         public IUserRepository User => _userRepository;
         public IReportRepository Report => _reportRepository;
 
-        public async Task SaveAsync()
+        public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
         }

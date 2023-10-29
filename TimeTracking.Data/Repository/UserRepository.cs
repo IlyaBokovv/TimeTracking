@@ -43,5 +43,9 @@ namespace TimeTracking.Data.Repository
         {
             return await FindByCondition(x => x.Id == userId, trackChanges).FirstOrDefaultAsync();
         }
+        public async Task<bool> IsEmailUniqueAsync(string email)
+        {
+            return !await _db.Set<User>().AnyAsync(u => u.Email == email);
+        }
     }
 }
