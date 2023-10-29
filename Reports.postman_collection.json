@@ -25,7 +25,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7168/api/users/da9d87e1-f84a-484a-997d-bea07b6fa9ea/reports?monthNumber=10",
+					"raw": "https://localhost:7168/api/users/da9d87e1-f84a-484a-997d-bea07b6fa9ea/reports?monthNumber=9",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -40,7 +40,7 @@
 					"query": [
 						{
 							"key": "monthNumber",
-							"value": "10"
+							"value": "9"
 						}
 					]
 				},

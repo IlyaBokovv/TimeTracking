@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using TimeTracking.Data.DTOs;
+using TimeTracking.Data.Models;
 using TimeTracking.Services.Interfaces;
 
 namespace TimeTracking.API.Controllers
@@ -10,9 +13,12 @@ namespace TimeTracking.API.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly IServiceManager _service;
-        public ReportsController(IServiceManager serviceManager)
+        private readonly IValidator<ReportCreateAndUpdateDTO> _validator;
+
+        public ReportsController(IServiceManager serviceManager, IValidator<ReportCreateAndUpdateDTO> validator)
         {
             _service = serviceManager;
+            _validator = validator;
         }
         [HttpGet]
         public async Task<IActionResult> GetReportsForUser(Guid userId, [FromQuery] int? monthNumber)
@@ -31,6 +37,11 @@ namespace TimeTracking.API.Controllers
         public async Task<IActionResult> CreateReportForUser
             (Guid userId, [FromBody] ReportCreateAndUpdateDTO report)
         {
+            var result = await _validator.ValidateAsync(report);
+            if (!result.IsValid)
+            {
+                return UnprocessableEntity(result.ToDictionary());
+            }
             var reportToReturn = await _service.ReportService.CreateReportForUserAsync(userId, report,
                 false);
 
@@ -50,6 +61,11 @@ namespace TimeTracking.API.Controllers
         public async Task<IActionResult> UpdateReportForUser(Guid userId, Guid id,
             [FromBody] ReportCreateAndUpdateDTO report)
         {
+            var result = await _validator.ValidateAsync(report);
+            if (!result.IsValid)
+            {
+                return UnprocessableEntity(result.ToDictionary());
+            }
             await _service.ReportService.UpdateReportForUserAsync(userId, id, report, true);
 
             return NoContent();
